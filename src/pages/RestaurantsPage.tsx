@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { MainNavbar } from "@/components/MainNavbar";
 import { FoodCategorySelector } from "@/components/FoodCategorySelector";
 import { RestaurantCard } from "@/components/RestaurantCard";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Sample restaurant data
@@ -68,28 +70,42 @@ const restaurants = [
     deliveryFee: "$2.99",
     categories: ["8"]
   },
-];
-
-const offers = [
   {
-    id: "o1",
-    title: "50% OFF Your First Order",
-    description: "Use code WELCOME50",
-    image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&auto=format&fit=crop",
-    backgroundColor: "bg-brand-soft-pink"
+    id: "r7",
+    name: "Morning Delight",
+    image: "https://images.unsplash.com/photo-1495147466023-ac5c588e2e94?w=800&auto=format&fit=crop",
+    cuisine: "Breakfast",
+    rating: 4.4,
+    deliveryTime: "15-25 min",
+    deliveryFee: "$2.49",
+    categories: ["10"]
   },
   {
-    id: "o2",
-    title: "Free Delivery on Orders $15+",
-    description: "Limited time offer",
-    image: "https://images.unsplash.com/photo-1571867424488-4565932edb41?w=800&auto=format&fit=crop",
-    backgroundColor: "bg-brand-soft-yellow"
-  }
+    id: "r8",
+    name: "Spice Garden",
+    image: "https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=800&auto=format&fit=crop",
+    cuisine: "Indian",
+    rating: 4.6,
+    deliveryTime: "30-40 min",
+    deliveryFee: "$3.99",
+    categories: ["11"]
+  },
+  {
+    id: "r9",
+    name: "Green Bowl",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop",
+    cuisine: "Healthy",
+    rating: 4.5,
+    deliveryTime: "20-30 min",
+    deliveryFee: "$2.99",
+    categories: ["9"]
+  },
 ];
 
-const Index = () => {
+const RestaurantsPage = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("1"); // Default to "All"
+  const [searchQuery, setSearchQuery] = useState("");
   
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -99,72 +115,39 @@ const Index = () => {
     navigate(`/restaurant/${restaurantId}`);
   };
   
-  const filteredRestaurants = selectedCategory === "1" 
-    ? restaurants 
-    : restaurants.filter(restaurant => restaurant.categories.includes(selectedCategory));
+  const filteredRestaurants = restaurants.filter(restaurant => {
+    // Apply category filter
+    const matchesCategory = selectedCategory === "1" || restaurant.categories.includes(selectedCategory);
+    
+    // Apply search filter
+    const matchesSearch = 
+      searchQuery === "" || 
+      restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
       <MainNavbar />
       
       <main className="container mx-auto px-4 pb-20 max-w-6xl">
-        {/* Hero Banner */}
-        <div className="w-full bg-brand-orange rounded-xl overflow-hidden mt-6 relative">
-          <div className="md:flex items-center">
-            <div className="md:w-1/2 p-6 md:p-10 text-white">
-              <h1 className="text-3xl md:text-4xl font-bold mb-3">
-                Food delivery made simple
-              </h1>
-              <p className="text-lg mb-6 opacity-90">
-                Order from your favorite restaurants with just a few taps
-              </p>
-              <Button 
-                size="lg" 
-                className="bg-white text-brand-orange hover:bg-gray-100"
-                onClick={() => navigate('/restaurants')}
-              >
-                Order Now
-              </Button>
-            </div>
-            <div className="md:w-1/2">
-              <img 
-                src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800&auto=format&fit=crop"
-                alt="Delicious Food" 
-                className="w-full h-56 md:h-72 object-cover"
-              />
-            </div>
-          </div>
+        <h1 className="text-3xl font-bold mt-8 mb-6">Restaurants</h1>
+        
+        <div className="mb-6 relative">
+          <Input
+            placeholder="Search for restaurants or cuisines..."
+            className="pl-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
         </div>
         
-        {/* Offers */}
-        <h2 className="text-2xl font-bold mt-10 mb-4">Special Offers</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {offers.map(offer => (
-            <div 
-              key={offer.id} 
-              className={`${offer.backgroundColor} rounded-xl p-6 flex flex-col md:flex-row items-center card-hover cursor-pointer`}
-            >
-              <div className="md:w-2/3 mb-4 md:mb-0 md:mr-4">
-                <h3 className="text-xl font-bold mb-2">{offer.title}</h3>
-                <p className="text-gray-700">{offer.description}</p>
-              </div>
-              <div className="md:w-1/3">
-                <img 
-                  src={offer.image} 
-                  alt={offer.title} 
-                  className="w-full h-32 object-cover rounded-lg"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        {/* Food Categories */}
         <FoodCategorySelector onSelectCategory={handleCategorySelect} />
         
-        {/* Restaurants */}
-        <h2 className="text-2xl font-bold mt-10 mb-6">Restaurants Near You</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {filteredRestaurants.map(restaurant => (
             <RestaurantCard 
               key={restaurant.id}
@@ -184,13 +167,16 @@ const Index = () => {
           <div className="text-center py-12">
             <h3 className="text-xl font-medium mb-2">No restaurants found</h3>
             <p className="text-muted-foreground mb-6">
-              Try selecting a different category
+              Try a different search or category
             </p>
             <Button 
               variant="outline" 
-              onClick={() => setSelectedCategory("1")}
+              onClick={() => {
+                setSelectedCategory("1");
+                setSearchQuery("");
+              }}
             >
-              View All Restaurants
+              Clear Filters
             </Button>
           </div>
         )}
@@ -199,4 +185,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default RestaurantsPage;
