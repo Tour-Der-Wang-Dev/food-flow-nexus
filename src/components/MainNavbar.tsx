@@ -1,16 +1,31 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ShoppingCart, User, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, User, Search, Menu, X, LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const MainNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems } = useCart();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const cartItemCount = cartItems.length;
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm">
@@ -39,9 +54,33 @@ export const MainNavbar = () => {
             <Link to="/restaurants" className="text-gray-700 hover:text-brand-orange">
               Restaurants
             </Link>
-            <Link to="/account" className="text-gray-700 hover:text-brand-orange">
-              <User className="h-5 w-5" />
-            </Link>
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    My Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/orders")}>
+                    My Orders
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/profile" className="text-gray-700 hover:text-brand-orange">
+                <User className="h-5 w-5" />
+              </Link>
+            )}
+            
             <Link to="/cart" className="text-gray-700 hover:text-brand-orange relative">
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
@@ -53,7 +92,16 @@ export const MainNavbar = () => {
                 </Badge>
               )}
             </Link>
-            <Button variant="default">Sign In</Button>
+            
+            {user ? (
+              <Button variant="outline" onClick={handleSignOut}>
+                Sign Out
+              </Button>
+            ) : (
+              <Button variant="default" onClick={() => navigate("/auth")}>
+                Sign In
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -100,19 +148,45 @@ export const MainNavbar = () => {
               Restaurants
             </Link>
             <Link 
-              to="/account" 
+              to="/profile" 
               className="block py-2 text-gray-700 hover:text-brand-orange"
               onClick={() => setIsMenuOpen(false)}
             >
               My Account
             </Link>
-            <Button 
-              variant="default" 
-              className="w-full mt-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Sign In
-            </Button>
+            
+            {user ? (
+              <>
+                <Link 
+                  to="/orders" 
+                  className="block py-2 text-gray-700 hover:text-brand-orange"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  My Orders
+                </Link>
+                <Button 
+                  variant="outline" 
+                  className="w-full mt-2"
+                  onClick={() => {
+                    handleSignOut();
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button 
+                variant="default" 
+                className="w-full mt-2"
+                onClick={() => {
+                  navigate("/auth");
+                  setIsMenuOpen(false);
+                }}
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         )}
       </div>
