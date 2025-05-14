@@ -1,73 +1,122 @@
-# Welcome to your Lovable project
 
-## Project info
+# Food Delivery Hub
 
-**URL**: https://lovable.dev/projects/311f7861-6203-4f3b-b730-e5a8de9062a1
+A comprehensive food delivery platform connecting customers with local restaurants for seamless online ordering, delivery tracking, and management.
 
-## How can I edit this code?
+![Food Delivery Hub](https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&auto=format&fit=crop)
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **User Authentication**: Secure signup and login with email/password
+- **Restaurant Discovery**: Browse restaurants by category, cuisine, or search
+- **Menu Exploration**: View restaurant menus with detailed item descriptions
+- **Shopping Cart**: Add items, customize orders, and proceed to checkout
+- **Order Tracking**: Real-time updates on order status
+- **User Profiles**: Manage personal information and delivery addresses
+- **Responsive Design**: Optimized for both desktop and mobile devices
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/311f7861-6203-4f3b-b730-e5a8de9062a1) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v16 or higher)
+- npm or Yarn
+- Supabase account (for backend services)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository
+   ```bash
+   git clone https://github.com/your-username/food-delivery-hub.git
+   cd food-delivery-hub
+   ```
 
-Follow these steps:
+2. Install dependencies
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. Create a `.env` file in the root directory with your Supabase credentials:
+   ```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. Start the development server
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+5. Open your browser and navigate to `http://localhost:5173`
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## Technology Stack
 
-**Edit a file directly in GitHub**
+- **Frontend**:
+  - React.js with TypeScript
+  - Vite (build tool)
+  - React Router (routing)
+  - Tailwind CSS (styling)
+  - Shadcn UI (component library)
+  - Lucide Icons
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Backend**:
+  - Supabase (Backend-as-a-Service)
+  - PostgreSQL (database)
+  - Supabase Auth (authentication)
+  - Supabase Storage (file storage)
 
-**Use GitHub Codespaces**
+- **State Management**:
+  - React Query (data fetching)
+  - React Context API (global state)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+The project follows a feature-based organization, with key directories including:
 
-This project is built with:
+- `/src/components`: Reusable UI components
+- `/src/pages`: Page components corresponding to routes
+- `/src/hooks`: Custom React hooks
+- `/src/lib`: Utility functions and helpers
+- `/src/integrations`: Integration with external services
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+See [filesExplainer.md](./filesExplainer.md) for a detailed breakdown of all files.
 
-## How can I deploy this project?
+## Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/311f7861-6203-4f3b-b730-e5a8de9062a1) and click on Share -> Publish.
+The application can be deployed using services like Vercel, Netlify, or any other static site hosting platform.
 
-## Can I connect a custom domain to my Lovable project?
+1. Build the production version:
+   ```bash
+   npm run build
+   # or
+   yarn build
+   ```
 
-Yes, you can!
+2. Deploy the contents of the `dist` directory to your hosting service.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Contributing
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+We welcome contributions to the Food Delivery Hub project!
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your code follows the project's coding standards and includes appropriate tests.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Shadcn UI for the component library
+- Tailwind CSS for styling utilities
+- Supabase for backend services
+- All the contributors who have helped shape this project
